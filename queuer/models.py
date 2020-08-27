@@ -1,3 +1,33 @@
-from django.db import models
+# Imports from python
+from uuid import uuid4
 
-# Create your models here.
+# Imports from django
+from django.db import models
+from django.contrib.auth import get_user_model
+from django.utils.translation import gettext as _
+
+# Imports from foreign installed apps
+
+# Imports from local apps
+
+# Start of Models
+
+
+class QueueEntry(models.Model):
+    class Meta:
+        verbose_name = "Queue Entry"
+        verbose_name_plural = "Queue Entries"
+
+    barber = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE
+    )
+
+    uuid = models.CharField(
+        max_length=36,
+        default=uuid4()
+    )
+
+    timestamp = models.DateTimeField(
+        auto_now_add=True
+    )
