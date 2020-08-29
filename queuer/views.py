@@ -116,6 +116,11 @@ def ViewQueue(request, barberId):
         barberId=barberId
     )
     if barber_info:
+        queue = QueueEntry.objects.filter(
+            barberId=barberId,
+        ).order_by(
+            'timestamp'
+        )
         uuid = request.session.get('uuid')
         if uuid:
             try:
