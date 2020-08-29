@@ -15,32 +15,52 @@ from .models import QueueEntry
 
 
 def JoinQueue(request, barberId):
-    try:
-        QueueEntry.objects.get(
+    barber_info = AccountDetails.objects.get(
+        barberId=barberId
+    )
+    if barber_info:
+        queue_entry = QueueEntry.objects.get(
             barberId=barberId
         )
-    except Exception as err:
-        pass
-    else:
-        try:
-            new_queue_entry = QueueEntry.objects.create(
-                barberId=baberId,
-                uuid=uuid4()
-            )
-        except Exception as err:
-            pass
+        if not queue_entry:
+            try:
+                new_queue_entry = QueueEntry.objects.create(
+                    barberId=baberId,
+                    uuid=uuid4()
+                )
+            except Exception as err:
+                pass
+            else:
+                messages.success(
+                    request,
+                    f"You have successfully joined {barber_info.name}'s queue"
+                )
+                return redirect(
+                    reverse(
+                        'view_queue',
+                        barberId,
+                        new_queue_entry.id
+                    )
+                )
         else:
+            messages.warning(
+                request,
+                f"You are already in {barber_info.name}'s queue"
+            )
             return redirect(
                 reverse(
                     'view_queue',
-                    barberId,
-                    new_queue_entry.id
+                    barberId
                 )
             )
+    else:
+        messages.warning(
+            request,
+            f"This barber does not exist"
+        )
         return redirect(
             reverse(
-                'view_queue',
-                barberId
+                'home'
             )
         )
 
