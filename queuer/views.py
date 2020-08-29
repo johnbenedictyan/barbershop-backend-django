@@ -112,6 +112,41 @@ def LeaveQueue(request, barberId):
         )
 
 def ViewQueue(request, barberId):
-    return render(request, 'queue.html', {
-        'queue':queue
-    })
+    barber_info = AccountDetails.objects.get(
+        barberId=barberId
+    )
+    if barber_info:
+        uuid = request.session.get('uuid')
+        if uuid:
+            try:
+                queue_entry = QueueEntry.objects.get(
+                    barberId=barberId,
+                    uuid=uuid
+                )
+            except Exception as err:
+                pass
+            else:
+                if queue_entry:
+                    return render(
+                        'view-queue.html',
+                        {
+                            queue,
+                            uuid
+                        }
+                    )
+        return render(
+            'view-queue.html',
+            {
+                queue
+            }
+        )
+    else:
+        messages.warning(
+            request,
+            f"This barber does not exist"
+        )
+        return redirect(
+            reverse(
+                'home'
+            )
+        )
