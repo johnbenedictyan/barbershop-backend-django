@@ -82,7 +82,7 @@ def LeaveQueue(request, barberId):
                 if queue_entry:
                     queue_entry.delete()
                     messages.success(
-                        self.request,
+                        request,
                         f"You have successfully left {barber_info.name}'s queue"
                     )
                 else:
@@ -102,7 +102,7 @@ def LeaveQueue(request, barberId):
             )
     else:
         messages.warning(
-            self.request,
+            request,
             f"This barber does not exist"
         )
         return redirect(
