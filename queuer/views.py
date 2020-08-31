@@ -111,7 +111,7 @@ def LeaveQueue(request, queueId):
             )
         )
 
-def ViewQueue(request, queueId):
+def ViewQueue(request, queueId, queueEntryId=None):
     barber_info = AccountDetails.objects.get(
         queue=queueId
     )
