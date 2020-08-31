@@ -156,3 +156,61 @@ def ViewQueue(request, barberId):
                 uuid
             }
         )
+
+def OpenQueue(request, queueId):
+    try:
+        selected_queue = Queue.objects.get(
+            barber=request.user
+        )
+    except Queue.DoesNotExist:
+        messages.warning(
+            request,
+            f"This queue does not belong to you"
+        )
+        return redirect(
+            reverse(
+                'home'
+            )
+        )
+    else:
+        selected_queue.open = True
+        selected_queue.save()
+        messages.success(
+            request,
+            f"The queue is now open"
+        )
+        return redirect(
+            reverse(
+                'view_queue',
+                queueId
+            )
+        )
+
+def CloseQueue(request, queueId):
+    try:
+        selected_queue = Queue.objects.get(
+            barber=request.user
+        )
+    except Queue.DoesNotExist:
+        messages.warning(
+            request,
+            f"This queue does not belong to you"
+        )
+        return redirect(
+            reverse(
+                'home'
+            )
+        )
+    else:
+        selected_queue.open = False
+        selected_queue.save()
+        messages.success(
+            request,
+            f"The queue is now closed"
+        )
+        return redirect(
+            reverse(
+                'view_queue',
+                queueId
+            )
+        )
