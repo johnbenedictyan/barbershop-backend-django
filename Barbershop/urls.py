@@ -23,11 +23,13 @@ from django.urls import include, path
 # Imports from local apps
 from barbers.urls import urlpatterns as barbers_urls
 from website.urls import urlpatterns as website_urls
+from queuer.urls import urlpatterns as queue_urls
 
 # Start of Urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('barbers/', include(barbers_urls)),
+    path('queue/', include(queue_urls)),
     path('', include(website_urls)),
 ]
