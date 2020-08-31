@@ -1,2 +1,11 @@
+{% extends 'website-base.html' %}
+{% load static %}
 {% block website_section %}
+<div class="container">
+    <div class="jumbotron">
+        <img src="{% static 'barbershop.jpg' %}" alt="" class="img-fluid">
+        <h1 class="display-4">Barbershop SG</h1>
+        <a class="btn btn-primary btn-lg" href="#" role="button">View all barbers</a>
+    </div>
+</div>
 {% endblock website_section %}
