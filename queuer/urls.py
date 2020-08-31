@@ -4,7 +4,7 @@ from django.urls import path
 # Imports from foreign installed apps
 
 # Imports from local apps
-from .views import JoinQueue, LeaveQueue, ViewQueue
+from .views import JoinQueue, LeaveQueue, ViewQueue, OpenQueue, CloseQueue
 
 # Start of Urls
 
@@ -23,5 +23,15 @@ urlpatterns = [
         'view/<int:barberId>',
         ViewQueue,
         name='view_queue'
+    ),
+    path(
+        'open/<int:queueId>',
+        OpenQueue,
+        name='open_queue'
+    ),
+    path(
+        'close/<int:queueId>',
+        CloseQueue,
+        name='close_queue'
     )
 ]
