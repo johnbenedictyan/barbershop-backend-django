@@ -40,7 +40,7 @@ class QueueEntry(models.Model):
 
     uuid = models.CharField(
         max_length=36,
-        default=uuid4()
+        default=uuid4
     )
 
     timestamp = models.DateTimeField(
