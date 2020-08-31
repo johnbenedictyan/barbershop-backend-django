@@ -41,6 +41,7 @@ def JoinQueue(request, queueId):
             except Exception as err:
                 pass
             else:
+                request.session['uuid'] = new_queue_entry.uuid
                 messages.success(
                     request,
                     f"You have successfully joined {barber_info.name}'s queue"
