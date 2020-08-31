@@ -18,9 +18,10 @@ class AccountDetails(models.Model):
         verbose_name = "Account Details"
         verbose_name_plural = "Account Details"
 
-    user = models.ForeignKey(
+    user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
+        related_name='details'
     )
 
     address_1 = models.CharField(
