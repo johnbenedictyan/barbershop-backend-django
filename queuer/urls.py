@@ -10,17 +10,17 @@ from .views import JoinQueue, LeaveQueue, ViewQueue
 
 urlpatterns = [
     path(
-        'join/<int:barberId>',
+        'join/<int:queueId>',
         JoinQueue,
         name='join_queue'
     ),
     path(
-        'leave/<int:barberId>',
+        'leave/<int:queueId>',
         LeaveQueue,
         name='leave_queue'
     ),
     path(
-        'view/<int:barberId>',
+        'view/<int:queueId>/<int:queueEntryId>',
         ViewQueue,
         name='view_queue'
     )
