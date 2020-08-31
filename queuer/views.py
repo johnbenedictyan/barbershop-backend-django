@@ -114,7 +114,7 @@ def LeaveQueue(request, queueId):
 def ViewQueue(request, barberId):
     try:
         barber_info = AccountDetails.objects.get(
-            barber=barberId
+            user=barberId
         )
     except AccountDetails.DoesNotExist:
         messages.warning(
@@ -127,8 +127,10 @@ def ViewQueue(request, barberId):
             )
         )
     else:
-        pass
-        queue = QueueEntry.objects.filter(
+        queueId = Queue.objects.get(
+            barber=barberId
+        )
+        queue_object = QueueEntry.objects.filter(
             queue=queueId,
         ).order_by(
             'timestamp'
@@ -149,7 +151,7 @@ def ViewQueue(request, barberId):
         return render(
             'view-queue.html',
             {
-                queue,
+                queue_object,
                 barber_info,
                 uuid
             }
