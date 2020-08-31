@@ -38,8 +38,7 @@ def JoinQueue(request, queueId):
                 return redirect(
                     reverse(
                         'view_queue',
-                        queueId,
-                        new_queue_entry.id
+                        queueId
                     )
                 )
         else:
@@ -111,7 +110,7 @@ def LeaveQueue(request, queueId):
             )
         )
 
-def ViewQueue(request, queueId, queueEntryId=None):
+def ViewQueue(request, queueId):
     barber_info = AccountDetails.objects.get(
         queue=queueId
     )
