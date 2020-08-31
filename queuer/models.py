@@ -13,6 +13,21 @@ from django.utils.translation import gettext as _
 # Start of Models
 
 
+class Queue(models.Model):
+    class Meta:
+        verbose_name = "Queue"
+        verbose_name_plural = "Queues"
+
+    barber = models.OneToOneField(
+        get_user_model(),
+        on_delete=models.CASCADE,
+        related_name='queue'
+    )
+
+    waiting_time = models.PositiveIntegerField(
+        default=0
+    )
+        
 class QueueEntry(models.Model):
     class Meta:
         verbose_name = "Queue Entry"
