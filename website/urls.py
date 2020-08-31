@@ -26,5 +26,9 @@ from .views import home
 # Start of Urls
 
 urlpatterns = [
-    path('', home)
+    path(
+        '',
+        home,
+        name='home'
+    )
 ]
