@@ -64,12 +64,19 @@ def JoinQueue(request, queueId):
             )
 
 def LeaveQueue(request, queueId):
-    barber = Queue.objects.get(pk=queueId).barber
-
-    barber_info = AccountDetails.objects.get(
-        barber=barber
-    )
-    if barber_info:
+    try:
+        Queue.objects.get(pk=queueId)
+    except Queue.DoesNotExist:
+        messages.warning(
+            request,
+            f"This barber does not exist"
+        )
+        return redirect(
+            reverse(
+                'home'
+            )
+        )
+    else:
         uuid = request.session.get('uuid')
         if uuid:
             try:
@@ -82,12 +89,13 @@ def LeaveQueue(request, queueId):
             else:
                 if queue_entry:
                     queue_entry.delete()
+                    request.session.pop('uuid')
                     messages.success(
                         request,
                         f"You have successfully left {barber_info.name}'s queue"
                     )
                 else:
-                    pass
+                    request.session.pop('uuid')
                 return redirect(
                     reverse(
                         'view_queue',
@@ -101,16 +109,6 @@ def LeaveQueue(request, queueId):
                     queueId
                 )
             )
-    else:
-        messages.warning(
-            request,
-            f"This barber does not exist"
-        )
-        return redirect(
-            reverse(
-                'home'
-            )
-        )
 
 def ViewQueue(request, queueId):
     barber = Queue.objects.get(pk=queueId).barber
