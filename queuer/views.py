@@ -111,13 +111,23 @@ def LeaveQueue(request, queueId):
                 )
             )
 
-def ViewQueue(request, queueId):
-    barber = Queue.objects.get(pk=queueId).barber
-
-    barber_info = AccountDetails.objects.get(
-        barber=barber
-    )
-    if barber_info:
+def ViewQueue(request, barberId):
+    try:
+        barber_info = AccountDetails.objects.get(
+            barber=barberId
+        )
+    except AccountDetails.DoesNotExist:
+        messages.warning(
+            request,
+            f"This barber does not exist"
+        )
+        return redirect(
+            reverse(
+                'home'
+            )
+        )
+    else:
+        pass
         queue = QueueEntry.objects.filter(
             queue=queueId,
         ).order_by(
@@ -133,27 +143,14 @@ def ViewQueue(request, queueId):
             except Exception as err:
                 pass
             else:
-                if queue_entry:
-                    return render(
-                        'view-queue.html',
-                        {
-                            queue,
-                            uuid
-                        }
-                    )
+                if not queue_entry:
+                    request.session.pop('uuid')
+                    uuid = None
         return render(
             'view-queue.html',
             {
-                queue
+                queue,
+                barber_info,
+                uuid
             }
-        )
-    else:
-        messages.warning(
-            request,
-            f"This barber does not exist"
-        )
-        return redirect(
-            reverse(
-                'home'
-            )
         )
