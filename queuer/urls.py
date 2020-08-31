@@ -20,7 +20,7 @@ urlpatterns = [
         name='leave_queue'
     ),
     path(
-        'view/<int:queueId>',
+        'view/<int:barberId>',
         ViewQueue,
         name='view_queue'
     )
