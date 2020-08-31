@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.views.generic import ListView
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
@@ -120,3 +121,7 @@ class UpdateAccountDetailsView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         return super(UpdateAccountDetailsView, self).form_valid(form)
+
+class BarbershopList(ListView):
+    model = User
+    template_name = 'barbers.html'
