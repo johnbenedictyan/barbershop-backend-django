@@ -15,16 +15,24 @@ from .models import Queue, QueueEntry
 
 
 def JoinQueue(request, queueId):
-    barber = Queue.objects.get(pk=queueId).barber
-
-    barber_info = AccountDetails.objects.get(
-        barber=barber
-    )
-    if barber_info:
-        queue_entry = QueueEntry.objects.get(
-            queue=queueId
+    try:
+        Queue.objects.get(pk=queueId)
+    except Queue.DoesNotExist:
+        messages.warning(
+            request,
+            f"This barber does not exist"
         )
-        if not queue_entry:
+        return redirect(
+            reverse(
+                'home'
+            )
+        )
+    else:
+        try:
+            queue_entry = QueueEntry.objects.get(
+                queue=queueId
+            )
+        except QueueEntry.DoesNotExist:
             try:
                 new_queue_entry = QueueEntry.objects.create(
                     queue=queueId,
@@ -54,16 +62,6 @@ def JoinQueue(request, queueId):
                     queueId
                 )
             )
-    else:
-        messages.warning(
-            request,
-            f"This barber does not exist"
-        )
-        return redirect(
-            reverse(
-                'home'
-            )
-        )
 
 def LeaveQueue(request, queueId):
     barber = Queue.objects.get(pk=queueId).barber
