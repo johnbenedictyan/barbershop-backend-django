@@ -125,3 +125,4 @@ class UpdateAccountDetailsView(LoginRequiredMixin, UpdateView):
 class BarbershopList(ListView):
     model = User
     template_name = 'barbers.html'
+    context_object_name = 'barbers'
