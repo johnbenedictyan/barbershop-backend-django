@@ -9,14 +9,16 @@ from django.shortcuts import render, redirect
 
 # Imports from local apps
 from barbers.models import AccountDetails
-from .models import QueueEntry
+from .models import Queue, QueueEntry
 
 # Start of Views
 
 
 def JoinQueue(request, queueId):
+    barber = Queue.objects.get(pk=queueId).barber
+
     barber_info = AccountDetails.objects.get(
-        queue=queueId
+        barber=barber
     )
     if barber_info:
         queue_entry = QueueEntry.objects.get(
@@ -64,8 +66,10 @@ def JoinQueue(request, queueId):
         )
 
 def LeaveQueue(request, queueId):
+    barber = Queue.objects.get(pk=queueId).barber
+
     barber_info = AccountDetails.objects.get(
-        queue=queueId
+        barber=barber
     )
     if barber_info:
         uuid = request.session.get('uuid')
@@ -111,8 +115,10 @@ def LeaveQueue(request, queueId):
         )
 
 def ViewQueue(request, queueId):
+    barber = Queue.objects.get(pk=queueId).barber
+
     barber_info = AccountDetails.objects.get(
-        queue=queueId
+        barber=barber
     )
     if barber_info:
         queue = QueueEntry.objects.filter(
