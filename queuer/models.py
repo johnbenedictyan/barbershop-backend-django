@@ -27,6 +27,10 @@ class Queue(models.Model):
     waiting_time = models.PositiveIntegerField(
         default=0
     )
+
+    open = models.BooleanField(
+        default=False
+    )
         
 class QueueEntry(models.Model):
     class Meta:
