@@ -33,8 +33,8 @@ class QueueEntry(models.Model):
         verbose_name = "Queue Entry"
         verbose_name_plural = "Queue Entries"
 
-    barber = models.ForeignKey(
-        get_user_model(),
+    queue = models.ForeignKey(
+        Queue,
         on_delete=models.CASCADE
     )
 
