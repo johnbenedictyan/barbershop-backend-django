@@ -21,8 +21,10 @@ from django.urls import include, path
 # from notifications.urls import urlpatterns as notifications_urls
 
 # Imports from local apps
+from .views import home
 
 # Start of Urls
 
 urlpatterns = [
+    path('', home)
 ]
