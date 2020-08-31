@@ -14,18 +14,18 @@ from .models import QueueEntry
 # Start of Views
 
 
-def JoinQueue(request, barberId):
+def JoinQueue(request, queueId):
     barber_info = AccountDetails.objects.get(
-        barberId=barberId
+        queue=queueId
     )
     if barber_info:
         queue_entry = QueueEntry.objects.get(
-            barberId=barberId
+            queue=queueId
         )
         if not queue_entry:
             try:
                 new_queue_entry = QueueEntry.objects.create(
-                    barberId=baberId,
+                    queue=queueId,
                     uuid=uuid4()
                 )
             except Exception as err:
@@ -38,7 +38,7 @@ def JoinQueue(request, barberId):
                 return redirect(
                     reverse(
                         'view_queue',
-                        barberId,
+                        queueId,
                         new_queue_entry.id
                     )
                 )
@@ -50,7 +50,7 @@ def JoinQueue(request, barberId):
             return redirect(
                 reverse(
                     'view_queue',
-                    barberId
+                    queueId
                 )
             )
     else:
@@ -64,16 +64,16 @@ def JoinQueue(request, barberId):
             )
         )
 
-def LeaveQueue(request, barberId):
+def LeaveQueue(request, queueId):
     barber_info = AccountDetails.objects.get(
-        barberId=barberId
+        queue=queueId
     )
     if barber_info:
         uuid = request.session.get('uuid')
         if uuid:
             try:
                 queue_entry = QueueEntry.objects.get(
-                    barberId=barberId,
+                    queue=queueId,
                     uuid=uuid
                 )
             except Exception as err:
@@ -90,14 +90,14 @@ def LeaveQueue(request, barberId):
                 return redirect(
                     reverse(
                         'view_queue',
-                        barberId
+                        queueId
                     )
                 )
         else:
             return redirect(
                 reverse(
                     'view_queue',
-                    barberId
+                    queueId
                 )
             )
     else:
@@ -111,13 +111,13 @@ def LeaveQueue(request, barberId):
             )
         )
 
-def ViewQueue(request, barberId):
+def ViewQueue(request, queueId):
     barber_info = AccountDetails.objects.get(
-        barberId=barberId
+        queue=queueId
     )
     if barber_info:
         queue = QueueEntry.objects.filter(
-            barberId=barberId,
+            queue=queueId,
         ).order_by(
             'timestamp'
         )
@@ -125,7 +125,7 @@ def ViewQueue(request, barberId):
         if uuid:
             try:
                 queue_entry = QueueEntry.objects.get(
-                    barberId=barberId,
+                    queue=queueId,
                     uuid=uuid
                 )
             except Exception as err:
