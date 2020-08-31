@@ -11,7 +11,8 @@ from .forms import (
 )
 from .views import (
     AccountDetailsView, PasswordChangeDoneRedirectView,
-    PasswordResetDoneRedirectView, RegisterView, UpdateAccountDetailsView
+    PasswordResetDoneRedirectView, RegisterView, UpdateAccountDetailsView,
+    BarbershopList
 )
 
 # Start of Urls
@@ -92,4 +93,9 @@ urlpatterns = [
         RegisterView.as_view(),
         name='register'
     ),
+    path(
+        '',
+        BarbershopList.as_view(),
+        name='all_barbers'
+    )
 ]
