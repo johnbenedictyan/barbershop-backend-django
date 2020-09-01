@@ -185,7 +185,7 @@ def ViewQueue(request, barberId):
                     'queue_object': queue_object,
                     'barber_info': barber_info,
                     'uuid': uuid,
-                    'queueId': selected_queue.id
+                    'queue': selected_queue
                 }
             )
         
