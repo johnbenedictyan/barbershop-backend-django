@@ -102,7 +102,10 @@ def LeaveQueue(request, queueId):
                     request.session.pop('uuid')
                     messages.success(
                         request,
-                        f"You have successfully left {barber_info.name}'s queue"
+                        f"""
+                        You have successfully left 
+                        {selected_queue.barber.details.name}'s queue
+                        """
                     )
                 else:
                     request.session.pop('uuid')
