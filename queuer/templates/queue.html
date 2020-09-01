@@ -20,9 +20,10 @@
         <p>No one in queue!</p>
         {% endfor %}
     </ul>
-    <a class="btn btn-primary btn-lg" href="{% url 'join_queue' queue.id %}" role="button">Join Queue</a>
     {% if uuid %}
     <a class="btn btn-primary btn-lg" href="{% url 'leave_queue' queue.id %}" role="button">Leave Queue</a>
+    {% else %}
+    <a class="btn btn-primary btn-lg" href="{% url 'join_queue' queue.id %}" role="button">Join Queue</a>
     {% endif %}
 </div>
 {% endblock queuer_section %}
