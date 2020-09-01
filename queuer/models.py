@@ -86,3 +86,13 @@ def move_max_queue_number(sender, instance, **kwargs):
     queue.max_queue_number += 1
     queue.save()
     
+@receiver(post_delete, sender=QueueEntry)
+def order_queue_numbers(sender, instance, **kwargs):
+    queue = instance.queue
+    for index, item in enumerate(
+        QueueEntry.objects.filter(
+            queue=queue
+        )
+    ):
+        item.position = index + 1
+        item.save()
