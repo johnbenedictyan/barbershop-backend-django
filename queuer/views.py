@@ -241,7 +241,7 @@ def CloseQueue(request, queueId):
             reverse(
                 'view_queue',
                 kwargs={
-                            'barberId': selected_queue.barber.id
-                        }
+                    'barberId': selected_queue.barber.id
+                }
             )
         )
