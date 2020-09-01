@@ -29,46 +29,54 @@ def JoinQueue(request, queueId):
             )
         )
     else:
-        uuid = request.session.get('uuid')
-        if uuid:
-            try:
-                queue_entry = QueueEntry.objects.get(
-                    queue=selected_queue,
-                    uuid=uuid
-                )
-            except QueueEntry.DoesNotExist:
-                request.session.pop('uuid')
-                messages.warning(
-                    request,
-                    f"""
-                    An error has occured when trying to join
-                    {selected_queue.barber.details.name}'s queue
-                    """
-                )
-            else:
-                messages.warning(
-                    request,
-                    f"""
-                    You are already in {selected_queue.barber.details.name}'s 
-                    queue
-                    """
-                )
+        if selected_queue.open == False:
+            messages.warning(
+                request,
+                f"""
+                {selected_queue.barber.details.name}'s queue is closed
+                """
+            )
         else:
-            try:
-                new_queue_entry = QueueEntry.objects.create(
-                    queue=selected_queue
-                )
-            except Exception as err:
-                pass
+            uuid = request.session.get('uuid')
+            if uuid:
+                try:
+                    queue_entry = QueueEntry.objects.get(
+                        queue=selected_queue,
+                        uuid=uuid
+                    )
+                except QueueEntry.DoesNotExist:
+                    request.session.pop('uuid')
+                    messages.warning(
+                        request,
+                        f"""
+                        An error has occured when trying to join
+                        {selected_queue.barber.details.name}'s queue
+                        """
+                    )
+                else:
+                    messages.warning(
+                        request,
+                        f"""
+                        You are already in 
+                        {selected_queue.barber.details.name}'s queue
+                        """
+                    )
             else:
-                request.session['uuid'] = str(new_queue_entry.uuid)
-                messages.success(
-                    request,
-                    f"""
-                    You have successfully joined 
-                    {selected_queue.barber.details.name}'s queue
-                    """
-                )
+                try:
+                    new_queue_entry = QueueEntry.objects.create(
+                        queue=selected_queue
+                    )
+                except Exception as err:
+                    pass
+                else:
+                    request.session['uuid'] = str(new_queue_entry.uuid)
+                    messages.success(
+                        request,
+                        f"""
+                        You have successfully joined 
+                        {selected_queue.barber.details.name}'s queue
+                        """
+                    )
         return redirect(
             reverse(
                 'view_queue',
