@@ -4,7 +4,7 @@
     <h1>{{barber_info.name}}'s queue</h1>
     <p>Estimated Wait Time: {{queue.waiting_time}} mins</p>
     <ul class="list-group">
-        {% if queue.open == True %}
+        {% if queue.opened == True %}
             {% for entry in queue_object %}
                 {% if entry.uuid == uuid %}
                 <li class="list-group-item" style="background-color:red;">

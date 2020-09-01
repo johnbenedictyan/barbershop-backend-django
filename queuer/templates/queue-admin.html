@@ -3,7 +3,7 @@
 <div class="container">
     <h1>{{barber_info.name}}'s queue</h1>
     <ul class="list-group">
-        {% if queue.open == True %}
+        {% if queue.opened == True %}
             {% for entry in queue_object %}
             <li class="list-group-item">
                 <span class="badge badge-primary h5">{{entry.position}}</span>
@@ -17,7 +17,7 @@
         <h1>The queue is closed!</h1>
         {% endif %}
     </ul>
-    {% if queue.open == True %}
+    {% if queue.opened == True %}
     <a class="btn btn-primary btn-lg" href="{% url 'close_queue' queue.id %}" role="button">Close Queue</a>
     {% else %}
     <a class="btn btn-primary btn-lg" href="{% url 'open_queue' queue.id %}" role="button">Open Queue</a>

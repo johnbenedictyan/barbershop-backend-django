@@ -29,7 +29,7 @@ def JoinQueue(request, queueId):
             )
         )
     else:
-        if selected_queue.open == False:
+        if selected_queue.opened == False:
             messages.warning(
                 request,
                 f"""
@@ -223,7 +223,7 @@ def OpenQueue(request, queueId):
             )
         )
     else:
-        selected_queue.open = True
+        selected_queue.opened = True
         selected_queue.save()
         messages.success(
             request,
@@ -255,7 +255,7 @@ def CloseQueue(request, queueId):
         )
     else:
         selected_queue.max_queue_number = 0
-        selected_queue.open = False
+        selected_queue.opened = False
         selected_queue.save()
         QueueEntry.objects.filter(queue=selected_queue).delete()
         messages.success(

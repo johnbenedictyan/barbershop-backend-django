@@ -30,7 +30,7 @@ class Queue(models.Model):
         default=0
     )
 
-    open = models.BooleanField(
+    opened = models.BooleanField(
         default=False
     )
 
