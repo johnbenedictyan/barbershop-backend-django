@@ -38,10 +38,6 @@ class Queue(models.Model):
         default=0
     )
 
-    total_wait_time = models.PositiveIntegerField(
-        default=0
-    )
-
     def __str__(self):
         return f"{self.barber.details.name}'s queue"
 
@@ -97,7 +93,7 @@ class QueueEntry(models.Model):
 def move_max_queue_number(sender, instance, **kwargs):
     queue = instance.queue
     queue.max_queue_number += 1
-    queue.total_wait_time = QueueEntry.objects.filter(queue=queue).count() * 15
+    queue.waiting_time = QueueEntry.objects.filter(queue=queue).count() * 15
     queue.save()
     
 @receiver(post_delete, sender=QueueEntry)
