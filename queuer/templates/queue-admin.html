@@ -17,10 +17,11 @@
         <h1>The queue is closed!</h1>
         {% endif %}
     </ul>
-    {% if queue.opened == True %}
-    <a class="btn btn-primary btn-lg" href="{% url 'close_queue' queue.id %}" role="button">Close Queue</a>
+    {% if queue.paused == True or queue.opened == False %}
+        <a class="btn btn-primary btn-lg" href="{% url 'open_queue' queue.id %}" role="button">Open Queue</a>
     {% else %}
-    <a class="btn btn-primary btn-lg" href="{% url 'open_queue' queue.id %}" role="button">Open Queue</a>
+        <a class="btn btn-primary btn-lg" href="{% url 'pause_queue' queue.id %}" role="button">Pause Queue</a>
+        <a class="btn btn-primary btn-lg" href="{% url 'close_queue' queue.id %}" role="button">Close Queue</a>
     {% endif %}
 </div>
 {% endblock queuer_section %}
