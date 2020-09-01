@@ -17,7 +17,7 @@ from .models import Queue, QueueEntry
 
 def JoinQueue(request, queueId):
     try:
-        queue = Queue.objects.get(pk=queueId)
+        selected_queue = Queue.objects.get(pk=queueId)
     except Queue.DoesNotExist:
         messages.warning(
             request,
@@ -31,12 +31,12 @@ def JoinQueue(request, queueId):
     else:
         try:
             queue_entry = QueueEntry.objects.get(
-                queue=queue
+                queue=selected_queue
             )
         except QueueEntry.DoesNotExist:
             try:
                 new_queue_entry = QueueEntry.objects.create(
-                    queue=queue
+                    queue=selected_queue
                 )
             except Exception as err:
                 pass
@@ -45,35 +45,37 @@ def JoinQueue(request, queueId):
                 messages.success(
                     request,
                     f"""
-                    You have successfully joined {queue.barber.details.name}'s
-                    queue
+                    You have successfully joined 
+                    {selected_queue.barber.details.name}'s queue
                     """
                 )
                 return redirect(
                     reverse(
                         'view_queue',
                         kwargs={
-                            'barberId': queue.barber.id
+                            'barberId': selected_queue.barber.id
                         }
                     )
                 )
         else:
             messages.warning(
                 request,
-                f"You are already in {queue.barber.details.name}'s queue"
+                f"""
+                You are already in {selected_queue.barber.details.name}'s queue
+                """
             )
             return redirect(
                 reverse(
                     'view_queue',
                     kwargs={
-                        'barberId': queue.barber.id
+                        'barberId': selected_queue.barber.id
                     }
                 )
             )
 
 def LeaveQueue(request, queueId):
     try:
-        Queue.objects.get(pk=queueId)
+        selected_queue = Queue.objects.get(pk=queueId)
     except Queue.DoesNotExist:
         messages.warning(
             request,
@@ -89,7 +91,7 @@ def LeaveQueue(request, queueId):
         if uuid:
             try:
                 queue_entry = QueueEntry.objects.get(
-                    queue=queueId,
+                    queue=selected_queue,
                     uuid=uuid
                 )
             except Exception as err:
@@ -107,14 +109,18 @@ def LeaveQueue(request, queueId):
                 return redirect(
                     reverse(
                         'view_queue',
-                        queueId
+                        kwargs={
+                            'barberId': selected_queue.barber.id
+                        }
                     )
                 )
         else:
             return redirect(
                 reverse(
                     'view_queue',
-                    queueId
+                    kwargs={
+                        'barberId': selected_queue.barber.id
+                    }
                 )
             )
 
@@ -135,7 +141,7 @@ def ViewQueue(request, barberId):
         )
     else:
         try:
-            queue = Queue.objects.get(
+            selected_queue = Queue.objects.get(
                 barber=barberId
             )
         except Queue.DoesNotExist:
@@ -150,7 +156,7 @@ def ViewQueue(request, barberId):
             )
         else:
             queue_object = QueueEntry.objects.filter(
-                queue=queue,
+                queue=selected_queue,
             ).order_by(
                 'timestamp'
             )
@@ -158,7 +164,7 @@ def ViewQueue(request, barberId):
             if uuid:
                 try:
                     queue_entry = QueueEntry.objects.get(
-                        queue=queue,
+                        queue=selected_queue,
                         uuid=uuid
                     )
                 except Exception as err:
@@ -174,7 +180,7 @@ def ViewQueue(request, barberId):
                     'queue_object': queue_object,
                     'barber_info': barber_info,
                     'uuid': uuid,
-                    'queueId': queue.id
+                    'queueId': selected_queue.id
                 }
             )
         
@@ -203,7 +209,9 @@ def OpenQueue(request, queueId):
         return redirect(
             reverse(
                 'view_queue',
-                queueId
+                kwargs={
+                    'barberId': selected_queue.barber.id
+                }
             )
         )
 
@@ -232,6 +240,8 @@ def CloseQueue(request, queueId):
         return redirect(
             reverse(
                 'view_queue',
-                queueId
+                kwargs={
+                            'barberId': selected_queue.barber.id
+                        }
             )
         )
