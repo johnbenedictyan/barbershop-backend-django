@@ -94,8 +94,14 @@ def LeaveQueue(request, queueId):
                     queue=selected_queue,
                     uuid=uuid
                 )
-            except Exception as err:
-                pass
+            except QueueEntry.DoesNotExist:
+                messages.warning(
+                    request,
+                    f"""
+                    You have already left {selected_queue.barber.details.name}'s
+                    queue
+                    """
+                )
             else:
                 if queue_entry:
                     queue_entry.delete()
@@ -109,14 +115,14 @@ def LeaveQueue(request, queueId):
                     )
                 else:
                     request.session.pop('uuid')
-                return redirect(
-                    reverse(
-                        'view_queue',
-                        kwargs={
-                            'barberId': selected_queue.barber.id
-                        }
-                    )
+            return redirect(
+                reverse(
+                    'view_queue',
+                    kwargs={
+                        'barberId': selected_queue.barber.id
+                    }
                 )
+            )
         else:
             return redirect(
                 reverse(
