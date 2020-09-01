@@ -79,7 +79,7 @@ class QueueEntry(models.Model):
         if not self.id:
             # A new queue entry object
             self.queue_number = self.queue.max_queue_number + 1
-        self.position = QueueEntry.objects.all().count() + 1
+        self.position = QueueEntry.objects.filter(queue=self.queue).count() + 1
         super().save(*args, **kwargs)
 
 @receiver(post_save, sender=QueueEntry)
