@@ -367,3 +367,57 @@ def KickFromQueue(request, queueId, queueEntryId):
                 }
             )
         )
+
+
+@login_required
+def CreateQueue(request):
+    try:
+        selected_queue = Queue.objects.get(barber=request.user)
+    except Queue.DoesNotExist:
+        try:
+            selected_account_details = AccountDetails.objects.get(
+                user=request.user
+            )
+        except AccountDetails.DoesNotExist:
+            messages.warning(
+                request,
+                f"Please update your account details before creating a queue"
+            )
+            return redirect(
+                reverse(
+                    'account_details'
+                )
+            )
+        else:
+            try:
+                new_queue = Queue.objects.create(
+                    barber=request.user
+                )
+            except Exception as err:
+                messages.warning(
+                    request,
+                    f"An error has occurred when trying to create this queue"
+                )
+                return redirect(
+                    reverse(
+                        'home'
+                    )
+                )
+            else:
+                messages.success(
+                    request,
+                    f"Your queue has been successfully created"
+                )
+    else:
+        messages.warning(
+            request,
+            f"A queue in your account already exist"
+        )
+    return redirect(
+        reverse(
+            'view_queue',
+            kwargs={
+                'barberId': request.user.id
+            }
+        )
+    )

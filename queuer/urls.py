@@ -6,7 +6,7 @@ from django.urls import path
 # Imports from local apps
 from .views import (
     JoinQueue, LeaveQueue, ViewQueue, OpenQueue, CloseQueue, PauseQueue,
-    KickFromQueue
+    KickFromQueue, CreateQueue
 )
 
 # Start of Urls
@@ -46,5 +46,10 @@ urlpatterns = [
         'kick/<int:queueId>/<int:queueEntryId>',
         KickFromQueue,
         name='kick_from_queue'
+    ),
+    path(
+        'create',
+        CreateQueue,
+        name='create_queue'
     )
 ]
