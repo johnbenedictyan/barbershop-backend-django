@@ -35,7 +35,7 @@ class Queue(models.Model):
     )
 
     max_queue_number = models.PositiveIntegerField(
-        default=1
+        default=0
     )
 
     def __str__(self):
