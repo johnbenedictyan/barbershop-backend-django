@@ -87,13 +87,17 @@ class QueueEntry(models.Model):
         if not self.id:
             # A new queue entry object
             self.queue_number = self.queue.max_queue_number + 1
-        self.position = QueueEntry.objects.filter(queue=self.queue).count() + 1
+            self.position = QueueEntry.objects.filter(
+                queue=self.queue
+            ).count() + 1
+        self.wait_time = self.position * 15
         super().save(*args, **kwargs)
 
 @receiver(post_save, sender=QueueEntry)
 def move_max_queue_number(sender, instance, **kwargs):
     queue = instance.queue
     queue.max_queue_number += 1
+    queue.total_wait_time = QueueEntry.objects.filter(queue=queue).count() * 15
     queue.save()
     
 @receiver(post_delete, sender=QueueEntry)
