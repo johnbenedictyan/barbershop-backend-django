@@ -2,25 +2,27 @@
 {% block queuer_section %}
 <div class="container">
     <h1>{{barber_info.name}}'s queue</h1>
-    <p>Estimated Wait Time: </p>
+    <p>Estimated Wait Time: {{queue.waiting_time}} mins</p>
     <ul class="list-group">
         {% for entry in queue_object %}
         {% if entry.uuid == uuid %}
         <li class="list-group-item" style="background-color:red;">
-            <span class="badge badge-primary h5">{{entry.position}}</span>Queue Number: {{entry.queue_number}}
+            <span class="badge badge-primary h5">{{entry.position}}</span>
+            Queue Number: {{entry.queue_number}} {{entry.wait_time}} mins
         </li>
         {% else %}
         <li class="list-group-item">
-            <span class="badge badge-primary h5">{{entry.position}}</span>Queue Number: {{entry.queue_number}}
+            <span class="badge badge-primary h5">{{entry.position}}</span>
+            Queue Number: {{entry.queue_number}} {{entry.wait_time}} mins
         </li>
         {% endif %}
         {% empty %}
         <p>No one in queue!</p>
         {% endfor %}
     </ul>
-    <a class="btn btn-primary btn-lg" href="{% url 'join_queue' queueId %}" role="button">Join Queue</a>
+    <a class="btn btn-primary btn-lg" href="{% url 'join_queue' queue.id %}" role="button">Join Queue</a>
     {% if uuid %}
-    <a class="btn btn-primary btn-lg" href="{% url 'leave_queue' queueId %}" role="button">Leave Queue</a>
+    <a class="btn btn-primary btn-lg" href="{% url 'leave_queue' queue.id %}" role="button">Leave Queue</a>
     {% endif %}
 </div>
 {% endblock queuer_section %}
