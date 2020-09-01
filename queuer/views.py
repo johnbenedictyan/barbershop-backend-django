@@ -214,13 +214,11 @@ def ViewQueue(request, barberId):
 @login_required
 def OpenQueue(request, queueId):
     try:
-        selected_queue = Queue.objects.get(
-            barber=request.user
-        )
+        selected_queue = Queue.objects.get(pk=queueId)
     except Queue.DoesNotExist:
         messages.warning(
             request,
-            f"This queue does not belong to you"
+            f"This queue does not exist"
         )
         return redirect(
             reverse(
@@ -228,12 +226,18 @@ def OpenQueue(request, queueId):
             )
         )
     else:
-        selected_queue.opened = True
-        selected_queue.save()
-        messages.success(
-            request,
-            f"The queue is now open"
-        )
+        if selected_queue.barber == request.user:
+            selected_queue.opened = True
+            selected_queue.save()
+            messages.success(
+                request,
+                f"The queue is now open"
+            )
+        else:
+            messages.warning(
+                request,
+                f"This queue does not belong to you"
+            )
         return redirect(
             reverse(
                 'view_queue',
@@ -247,13 +251,11 @@ def OpenQueue(request, queueId):
 @login_required
 def CloseQueue(request, queueId):
     try:
-        selected_queue = Queue.objects.get(
-            barber=request.user
-        )
+        selected_queue = Queue.objects.get(pk=queueId)
     except Queue.DoesNotExist:
         messages.warning(
             request,
-            f"This queue does not belong to you"
+            f"This queue does not exist"
         )
         return redirect(
             reverse(
@@ -261,14 +263,20 @@ def CloseQueue(request, queueId):
             )
         )
     else:
-        selected_queue.max_queue_number = 0
-        selected_queue.opened = selected_queue.paused = False
-        selected_queue.save()
-        QueueEntry.objects.filter(queue=selected_queue).delete()
-        messages.success(
-            request,
-            f"The queue is now closed"
-        )
+        if selected_queue.barber == request.user:
+            selected_queue.max_queue_number = 0
+            selected_queue.opened = selected_queue.paused = False
+            selected_queue.save()
+            QueueEntry.objects.filter(queue=selected_queue).delete()
+            messages.success(
+                request,
+                f"The queue is now closed"
+            )
+        else:
+            messages.warning(
+                request,
+                f"This queue does not belong to you"
+            )
         return redirect(
             reverse(
                 'view_queue',
@@ -282,13 +290,11 @@ def CloseQueue(request, queueId):
 @login_required
 def PauseQueue(request, queueId):
     try:
-        selected_queue = Queue.objects.get(
-            barber=request.user
-        )
+        selected_queue = Queue.objects.get(pk=queueId)
     except Queue.DoesNotExist:
         messages.warning(
             request,
-            f"This queue does not belong to you"
+            f"This queue does not exist"
         )
         return redirect(
             reverse(
@@ -296,12 +302,18 @@ def PauseQueue(request, queueId):
             )
         )
     else:
-        selected_queue.paused = True
-        selected_queue.save()
-        messages.success(
-            request,
-            f"The queue is now closed"
-        )
+        if selected_queue.barber == request.user:
+            selected_queue.paused = True
+            selected_queue.save()
+            messages.success(
+                request,
+                f"The queue is now closed"
+            )
+        else:
+            messages.warning(
+                request,
+                f"This queue does not belong to you"
+            )
         return redirect(
             reverse(
                 'view_queue',
