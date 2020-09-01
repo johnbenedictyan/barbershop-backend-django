@@ -76,8 +76,10 @@ class QueueEntry(models.Model):
         return f"Queue #{self.queue.id} Queue Number #{self.queue_number}"
 
     def save(self, *args, **kwargs):
-        self.queue_number = self.queue.max_queue_number + 1
-        self.position = Queue.objects.all().count() + 1
+        if not self.id:
+            # A new queue entry object
+            self.queue_number = self.queue.max_queue_number + 1
+        self.position = QueueEntry.objects.all().count() + 1
         super().save(*args, **kwargs)
 
 @receiver(post_save, sender=QueueEntry)
