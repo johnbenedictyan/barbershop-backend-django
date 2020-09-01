@@ -24,6 +24,12 @@ class AccountDetails(models.Model):
         related_name='details'
     )
 
+    name = models.CharField(
+        verbose_name="Company Name",
+        max_length=100,
+        blank=False
+    )
+
     address_1 = models.CharField(
         verbose_name="Address",
         max_length=100,
