@@ -59,6 +59,9 @@ class AccountDetails(models.Model):
         blank=False
     )
 
+    def __str__(self):
+        return f"Account Details for {self.name}"
+
 class OperatingHours(models.Model):
     MONDAY = 'MO'
     TUESDAY = 'TU'
@@ -145,10 +148,6 @@ class OperatingHours(models.Model):
         choices=DAY_CHOICES
     )
 
-    open = models.BooleanField(
-        default=True
-    )
-
     opening_time = models.CharField(
         max_length=4,
         choices=TIME_CHOICES
@@ -158,3 +157,6 @@ class OperatingHours(models.Model):
         max_length=4,
         choices=TIME_CHOICES
     )
+
+    def __str__(self):
+        return f"Operating Hours for {self.user.details.name}"
