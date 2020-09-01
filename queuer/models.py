@@ -90,9 +90,10 @@ class QueueEntry(models.Model):
         super().save(*args, **kwargs)
 
 @receiver(post_save, sender=QueueEntry)
-def move_max_queue_number(sender, instance, **kwargs):
+def move_max_queue_number(sender, instance, created, **kwargs):
     queue = instance.queue
-    queue.max_queue_number += 1
+    if created:
+        queue.max_queue_number += 1
     queue.waiting_time = QueueEntry.objects.filter(queue=queue).count() * 15
     queue.save()
     
