@@ -31,6 +31,10 @@ class Queue(models.Model):
     open = models.BooleanField(
         default=False
     )
+
+    max_position = models.PositiveIntegerField(
+        default=1
+    )
         
 class QueueEntry(models.Model):
     class Meta:
@@ -53,4 +57,8 @@ class QueueEntry(models.Model):
 
     valid = models.BooleanField(
         default=True
+    )
+
+    position = models.PositiveIntegerField(
+        default=0
     )
