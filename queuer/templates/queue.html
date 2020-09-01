@@ -7,27 +7,31 @@
         {% if queue.opened == True %}
             {% for entry in queue_object %}
                 {% if entry.uuid == uuid %}
-                <li class="list-group-item" style="background-color:red;">
-                    <span class="badge badge-primary h5">{{entry.position}}</span>
-                    Queue Number: {{entry.queue_number}} {{entry.wait_time}} mins
-                </li>
+                    <li class="list-group-item" style="background-color:red;">
+                        <span class="badge badge-primary h5">{{entry.position}}</span>
+                        Queue Number: {{entry.queue_number}} {{entry.wait_time}} mins
+                    </li>
                 {% else %}
-                <li class="list-group-item">
-                    <span class="badge badge-primary h5">{{entry.position}}</span>
-                    Queue Number: {{entry.queue_number}} {{entry.wait_time}} mins
-                </li>
+                    <li class="list-group-item">
+                        <span class="badge badge-primary h5">{{entry.position}}</span>
+                        Queue Number: {{entry.queue_number}} {{entry.wait_time}} mins
+                    </li>
                 {% endif %}
             {% empty %}
-            <p>No one in queue!</p>
+                <p>No one in queue!</p>
             {% endfor %}
         {% else %}
-        <h1>The queue is closed!</h1>
+            {% if queue.paused == True %}
+                <h1>The queue is paused!</h1>
+            {% else %}
+                <h1>The queue is closed!</h1>
+            {% endif %}
         {% endif %}
     </ul>
     {% if uuid %}
-    <a class="btn btn-primary btn-lg" href="{% url 'leave_queue' queue.id %}" role="button">Leave Queue</a>
+        <a class="btn btn-primary btn-lg" href="{% url 'leave_queue' queue.id %}" role="button">Leave Queue</a>
     {% else %}
-    <a class="btn btn-primary btn-lg" href="{% url 'join_queue' queue.id %}" role="button">Join Queue</a>
+        <a class="btn btn-primary btn-lg" href="{% url 'join_queue' queue.id %}" role="button">Join Queue</a>
     {% endif %}
 </div>
 {% endblock queuer_section %}
