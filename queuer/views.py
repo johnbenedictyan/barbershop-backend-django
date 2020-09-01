@@ -149,11 +149,12 @@ def ViewQueue(request, barberId):
                     request.session.pop('uuid')
                     uuid = None
         return render(
-            'view-queue.html',
+            request,
+            'queue.html',
             {
-                queue_object,
-                barber_info,
-                uuid
+                'queue_object':queue_object,
+                'barber_info':barber_info,
+                'uuid':uuid
             }
         )
 
