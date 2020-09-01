@@ -49,14 +49,6 @@ def JoinQueue(request, queueId):
                     {selected_queue.barber.details.name}'s queue
                     """
                 )
-                return redirect(
-                    reverse(
-                        'view_queue',
-                        kwargs={
-                            'barberId': selected_queue.barber.id
-                        }
-                    )
-                )
         else:
             messages.warning(
                 request,
@@ -64,14 +56,14 @@ def JoinQueue(request, queueId):
                 You are already in {selected_queue.barber.details.name}'s queue
                 """
             )
-            return redirect(
-                reverse(
-                    'view_queue',
-                    kwargs={
-                        'barberId': selected_queue.barber.id
-                    }
-                )
+        return redirect(
+            reverse(
+                'view_queue',
+                kwargs={
+                    'barberId': selected_queue.barber.id
+                }
             )
+        )
 
 def LeaveQueue(request, queueId):
     try:
@@ -115,23 +107,14 @@ def LeaveQueue(request, queueId):
                     )
                 else:
                     request.session.pop('uuid')
-            return redirect(
-                reverse(
-                    'view_queue',
-                    kwargs={
-                        'barberId': selected_queue.barber.id
-                    }
-                )
+        return redirect(
+            reverse(
+                'view_queue',
+                kwargs={
+                    'barberId': selected_queue.barber.id
+                }
             )
-        else:
-            return redirect(
-                reverse(
-                    'view_queue',
-                    kwargs={
-                        'barberId': selected_queue.barber.id
-                    }
-                )
-            )
+        )
 
 def ViewQueue(request, barberId):
     try:
