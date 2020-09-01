@@ -29,11 +29,31 @@ def JoinQueue(request, queueId):
             )
         )
     else:
-        try:
-            queue_entry = QueueEntry.objects.get(
-                queue=selected_queue
-            )
-        except QueueEntry.DoesNotExist:
+        uuid = request.session.get('uuid')
+        if uuid:
+            try:
+                queue_entry = QueueEntry.objects.get(
+                    queue=selected_queue,
+                    uuid=uuid
+                )
+            except QueueEntry.DoesNotExist:
+                request.session.pop('uuid')
+                messages.warning(
+                    request,
+                    f"""
+                    An error has occured when trying to join
+                    {selected_queue.barber.details.name}'s queue
+                    """
+                )
+            else:
+                messages.warning(
+                    request,
+                    f"""
+                    You are already in {selected_queue.barber.details.name}'s 
+                    queue
+                    """
+                )
+        else:
             try:
                 new_queue_entry = QueueEntry.objects.create(
                     queue=selected_queue
@@ -49,13 +69,6 @@ def JoinQueue(request, queueId):
                     {selected_queue.barber.details.name}'s queue
                     """
                 )
-        else:
-            messages.warning(
-                request,
-                f"""
-                You are already in {selected_queue.barber.details.name}'s queue
-                """
-            )
         return redirect(
             reverse(
                 'view_queue',
