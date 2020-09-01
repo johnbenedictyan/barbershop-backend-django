@@ -90,7 +90,7 @@ class QueueEntry(models.Model):
             self.position = QueueEntry.objects.filter(
                 queue=self.queue
             ).count() + 1
-        self.wait_time = self.position * 15
+        self.wait_time = (self.position - 1) * 15
         super().save(*args, **kwargs)
 
 @receiver(post_save, sender=QueueEntry)
