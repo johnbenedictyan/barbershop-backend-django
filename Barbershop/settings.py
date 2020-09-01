@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 import os
+import dj_database_url
+import sys
 
 from pathlib import Path
 
@@ -81,7 +83,7 @@ WSGI_APPLICATION = 'Barbershop.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.parse(
-        os.environ.get("POSTGRESQL_URL")
+        os.environ.get("DATABASE_URL")
     )
 }
 
