@@ -4,6 +4,7 @@ from uuid import uuid4
 # Imports from django
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.urls import reverse
 
 # Imports from foreign installed apps
 
@@ -16,7 +17,7 @@ from .models import Queue, QueueEntry
 
 def JoinQueue(request, queueId):
     try:
-        Queue.objects.get(pk=queueId)
+        queue = Queue.objects.get(pk=queueId)
     except Queue.DoesNotExist:
         messages.warning(
             request,
@@ -30,13 +31,12 @@ def JoinQueue(request, queueId):
     else:
         try:
             queue_entry = QueueEntry.objects.get(
-                queue=queueId
+                queue=queue
             )
         except QueueEntry.DoesNotExist:
             try:
                 new_queue_entry = QueueEntry.objects.create(
-                    queue=queueId,
-                    uuid=uuid4()
+                    queue=queue
                 )
             except Exception as err:
                 pass
@@ -44,23 +44,30 @@ def JoinQueue(request, queueId):
                 request.session['uuid'] = new_queue_entry.uuid
                 messages.success(
                     request,
-                    f"You have successfully joined {barber_info.name}'s queue"
+                    f"""
+                    You have successfully joined {queue.barber.details.name}'s
+                    queue
+                    """
                 )
                 return redirect(
                     reverse(
                         'view_queue',
-                        queueId
+                        kwargs={
+                            'barberId': queue.barber.id
+                        }
                     )
                 )
         else:
             messages.warning(
                 request,
-                f"You are already in {barber_info.name}'s queue"
+                f"You are already in {queue.barber.details.name}'s queue"
             )
             return redirect(
                 reverse(
                     'view_queue',
-                    queueId
+                    kwargs={
+                        'barberId': queue.barber.id
+                    }
                 )
             )
 
