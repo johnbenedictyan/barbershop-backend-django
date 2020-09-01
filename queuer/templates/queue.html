@@ -6,9 +6,13 @@
     <ul class="list-group">
         {% for entry in queue_object %}
         {% if entry.uuid == uuid %}
-        <li class="list-group-item" style="background-color:red;">Queue Number: {{entry.id}}</li>
+        <li class="list-group-item" style="background-color:red;">
+            <span class="badge badge-primary h5">{{entry.position}}</span>Queue Number: {{entry.queue_number}}
+        </li>
         {% else %}
-        <li class="list-group-item">Queue Number: {{entry.id}}</li>
+        <li class="list-group-item">
+            <span class="badge badge-primary h5">{{entry.position}}</span>Queue Number: {{entry.queue_number}}
+        </li>
         {% endif %}
         {% empty %}
         <p>No one in queue!</p>
