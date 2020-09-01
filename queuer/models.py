@@ -39,7 +39,7 @@ class Queue(models.Model):
     )
 
     def __str__(self):
-        return f"{self.barber.details.name}'s queue'"
+        return f"{self.barber.details.name}'s queue"
 
 class QueueEntry(models.Model):
     class Meta:
