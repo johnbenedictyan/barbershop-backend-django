@@ -3,6 +3,7 @@ from uuid import uuid4
 
 # Imports from django
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
@@ -86,6 +87,7 @@ def JoinQueue(request, queueId):
             )
         )
 
+
 def LeaveQueue(request, queueId):
     try:
         selected_queue = Queue.objects.get(pk=queueId)
@@ -136,6 +138,7 @@ def LeaveQueue(request, queueId):
                 }
             )
         )
+
 
 def ViewQueue(request, barberId):
     try:
@@ -206,7 +209,9 @@ def ViewQueue(request, barberId):
                     'queue': selected_queue
                 }
             )
-        
+
+
+@login_required
 def OpenQueue(request, queueId):
     try:
         selected_queue = Queue.objects.get(
@@ -238,6 +243,8 @@ def OpenQueue(request, queueId):
             )
         )
 
+
+@login_required
 def CloseQueue(request, queueId):
     try:
         selected_queue = Queue.objects.get(
@@ -271,6 +278,8 @@ def CloseQueue(request, queueId):
             )
         )
 
+
+@login_required
 def PauseQueue(request, queueId):
     try:
         selected_queue = Queue.objects.get(
