@@ -74,3 +74,10 @@ class QueueEntry(models.Model):
     def save(self, *args, **kwargs):
         self.position = self.queue.max_position + 1
         super().save(*args, **kwargs)
+
+@receiver(post_save, sender=QueueEntry)
+def move_max_position(sender, instance, **kwargs):
+    queue = instance.queue
+    queue.max_position += 1
+    queue.save()
+    
