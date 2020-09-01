@@ -165,6 +165,16 @@ def ViewQueue(request, barberId):
             ).order_by(
                 'timestamp'
             )
+            if barberId == request.user.id:
+                return render(
+                    request,
+                    'queue-admin.html',
+                    {
+                        'queue_object': queue_object,
+                        'barber_info': barber_info,
+                        'queue': selected_queue
+                    }
+                )
             uuid = request.session.get('uuid')
             if uuid:
                 try:
