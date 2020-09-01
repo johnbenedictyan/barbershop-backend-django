@@ -1,0 +1,22 @@
+{% extends 'queuer-base.html' %}
+{% block queuer_section %}
+<div class="container">
+    <h1>{{barber_info.name}}'s queue</h1>
+    <ul class="list-group">
+        {% for entry in queue_object %}
+        <li class="list-group-item">
+            <span class="badge badge-primary h5">{{entry.position}}</span>
+            Queue Number: {{entry.queue_number}} 
+            <a href="{}" class="btn btn-danger">Kick from Queue</a>
+        </li>
+        {% empty %}
+        <p>No one in queue!</p>
+        {% endfor %}
+    </ul>
+    {% if queue.open == True %}
+    <a class="btn btn-primary btn-lg" href="{% url 'close_queue' queue.id %}" role="button">Close Queue</a>
+    {% else %}
+    <a class="btn btn-primary btn-lg" href="{% url 'open_queue' queue.id %}" role="button">Open Queue</a>
+    {% endif %}
+</div>
+{% endblock queuer_section %}
