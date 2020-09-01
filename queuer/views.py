@@ -41,7 +41,7 @@ def JoinQueue(request, queueId):
             except Exception as err:
                 pass
             else:
-                request.session['uuid'] = new_queue_entry.uuid
+                request.session['uuid'] = str(new_queue_entry.uuid)
                 messages.success(
                     request,
                     f"""
