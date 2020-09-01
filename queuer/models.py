@@ -34,7 +34,7 @@ class Queue(models.Model):
         default=False
     )
 
-    max_position = models.PositiveIntegerField(
+    max_queue_number = models.PositiveIntegerField(
         default=1
     )
 
@@ -64,20 +64,25 @@ class QueueEntry(models.Model):
         default=True
     )
 
+    queue_number = models.PositiveIntegerField(
+        default=1
+    )
+
     position = models.PositiveIntegerField(
         default=0
     )
 
     def __str__(self):
-        return f"Queue #{self.queue.id} Position #{self.position}"
+        return f"Queue #{self.queue.id} Queue Number #{self.queue_number}"
 
     def save(self, *args, **kwargs):
-        self.position = self.queue.max_position + 1
+        self.queue_number = self.queue.max_queue_number + 1
+        self.position = Queue.objects.all().count() + 1
         super().save(*args, **kwargs)
 
 @receiver(post_save, sender=QueueEntry)
-def move_max_position(sender, instance, **kwargs):
+def move_max_queue_number(sender, instance, **kwargs):
     queue = instance.queue
-    queue.max_position += 1
+    queue.max_queue_number += 1
     queue.save()
     
