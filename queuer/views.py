@@ -270,3 +270,34 @@ def CloseQueue(request, queueId):
                 }
             )
         )
+
+def PauseQueue(request, queueId):
+    try:
+        selected_queue = Queue.objects.get(
+            barber=request.user
+        )
+    except Queue.DoesNotExist:
+        messages.warning(
+            request,
+            f"This queue does not belong to you"
+        )
+        return redirect(
+            reverse(
+                'home'
+            )
+        )
+    else:
+        selected_queue.paused = True
+        selected_queue.save()
+        messages.success(
+            request,
+            f"The queue is now closed"
+        )
+        return redirect(
+            reverse(
+                'view_queue',
+                kwargs={
+                    'barberId': selected_queue.barber.id
+                }
+            )
+        )
