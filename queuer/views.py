@@ -254,6 +254,7 @@ def CloseQueue(request, queueId):
             )
         )
     else:
+        selected_queue.max_queue_number = 0
         selected_queue.open = False
         selected_queue.save()
         QueueEntry.objects.filter(queue=selected_queue).delete()
