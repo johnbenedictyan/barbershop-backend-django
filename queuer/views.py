@@ -127,37 +127,50 @@ def ViewQueue(request, barberId):
             )
         )
     else:
-        queueId = Queue.objects.get(
-            barber=barberId
-        )
-        queue_object = QueueEntry.objects.filter(
-            queue=queueId,
-        ).order_by(
-            'timestamp'
-        )
-        uuid = request.session.get('uuid')
-        if uuid:
-            try:
-                queue_entry = QueueEntry.objects.get(
-                    queue=queueId,
-                    uuid=uuid
+        try:
+            queue = Queue.objects.get(
+                barber=barberId
+            )
+        except Queue.DoesNotExist:
+            messages.warning(
+                request,
+                f"This barber has not created a queue"
+            )
+            return redirect(
+                reverse(
+                    'home'
                 )
-            except Exception as err:
-                pass
-            else:
-                if not queue_entry:
-                    request.session.pop('uuid')
-                    uuid = None
-        return render(
-            request,
-            'queue.html',
-            {
-                'queue_object':queue_object,
-                'barber_info':barber_info,
-                'uuid':uuid
-            }
-        )
-
+            )
+        else:
+            queue_object = QueueEntry.objects.filter(
+                queue=queue,
+            ).order_by(
+                'timestamp'
+            )
+            uuid = request.session.get('uuid')
+            if uuid:
+                try:
+                    queue_entry = QueueEntry.objects.get(
+                        queue=queue,
+                        uuid=uuid
+                    )
+                except Exception as err:
+                    pass
+                else:
+                    if not queue_entry:
+                        request.session.pop('uuid')
+                        uuid = None
+            return render(
+                request,
+                'queue.html',
+                {
+                    'queue_object': queue_object,
+                    'barber_info': barber_info,
+                    'uuid': uuid,
+                    'queueId': queue.id
+                }
+            )
+        
 def OpenQueue(request, queueId):
     try:
         selected_queue = Queue.objects.get(
