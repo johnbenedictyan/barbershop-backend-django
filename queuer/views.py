@@ -322,3 +322,48 @@ def PauseQueue(request, queueId):
                 }
             )
         )
+
+
+@login_required
+def KickFromQueue(request, queueId, queueEntryId):
+    try:
+        selected_queue = Queue.objects.get(pk=queueId)
+    except Queue.DoesNotExist:
+        messages.warning(
+            request,
+            f"This queue does not exist"
+        )
+        return redirect(
+            reverse(
+                'home'
+            )
+        )
+    else:
+        if selected_queue.barber == request.user:
+            try:
+                queue_entry = QueueEntry.objects.get(
+                    pk=queueEntryId
+                )
+            except QueueEntry.DoesNotExist:
+                pass
+            else:
+                queue_entry.delete()
+                messages.success(
+                    request,
+                    f"""
+                    You have successfully kicked this customer from the queue
+                    """
+                )
+        else:
+            messages.warning(
+                request,
+                f"This queue does not belong to you"
+            )
+        return redirect(
+            reverse(
+                'view_queue',
+                kwargs={
+                    'barberId': selected_queue.barber.id
+                }
+            )
+        )

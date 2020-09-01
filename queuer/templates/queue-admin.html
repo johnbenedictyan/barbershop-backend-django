@@ -8,7 +8,7 @@
             <li class="list-group-item">
                 <span class="badge badge-primary h5">{{entry.position}}</span>
                 Queue Number: {{entry.queue_number}}
-                <a href="{}" class="btn btn-danger">Kick from Queue</a>
+                <a href="{% url 'kick_from_queue' queue.id entry.id %}" class="btn btn-danger">Kick from Queue</a>
             </li>
             {% empty %}
             <p>No one in queue!</p>

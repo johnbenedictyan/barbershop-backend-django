@@ -5,7 +5,8 @@ from django.urls import path
 
 # Imports from local apps
 from .views import (
-    JoinQueue, LeaveQueue, ViewQueue, OpenQueue, CloseQueue, PauseQueue
+    JoinQueue, LeaveQueue, ViewQueue, OpenQueue, CloseQueue, PauseQueue,
+    KickFromQueue
 )
 
 # Start of Urls
@@ -40,5 +41,10 @@ urlpatterns = [
         'pause/<int:queueId>',
         PauseQueue,
         name='pause_queue'
+    ),
+    path(
+        'kick/<int:queueId>/<int:queueEntryId>',
+        KickFromQueue,
+        name='kick_from_queue'
     )
 ]
