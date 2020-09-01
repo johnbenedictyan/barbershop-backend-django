@@ -3,6 +3,8 @@ from uuid import uuid4
 
 # Imports from django
 from django.db import models
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 
