@@ -35,7 +35,10 @@ class Queue(models.Model):
     max_position = models.PositiveIntegerField(
         default=1
     )
-        
+
+    def __str__(self):
+        return f"{self.barber.details.name}'s queue'"
+
 class QueueEntry(models.Model):
     class Meta:
         verbose_name = "Queue Entry"
@@ -62,3 +65,10 @@ class QueueEntry(models.Model):
     position = models.PositiveIntegerField(
         default=0
     )
+
+    def __str__(self):
+        return f"Queue #{self.queue.id} Position #{self.position}"
+
+    def save(self, *args, **kwargs):
+        self.position = self.queue.max_position + 1
+        super().save(*args, **kwargs)
