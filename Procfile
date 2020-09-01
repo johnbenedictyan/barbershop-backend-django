@@ -1,1 +1,1 @@
-web: gunicorn project4.wsgi:application
+web: gunicorn Barbershop.wsgi:application
