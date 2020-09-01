@@ -29,7 +29,7 @@ def JoinQueue(request, queueId):
             )
         )
     else:
-        if selected_queue.opened == False:
+        if selected_queue.opened == False or selected_queue.paused == True:
             messages.warning(
                 request,
                 f"""
