@@ -248,6 +248,7 @@ def CloseQueue(request, queueId):
     else:
         selected_queue.open = False
         selected_queue.save()
+        QueueEntry.objects.filter(queue=selected_queue).delete()
         messages.success(
             request,
             f"The queue is now closed"
