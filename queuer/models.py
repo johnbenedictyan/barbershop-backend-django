@@ -34,6 +34,10 @@ class Queue(models.Model):
         default=False
     )
 
+    paused = models.BooleanField(
+        default=False
+    )
+
     max_queue_number = models.PositiveIntegerField(
         default=0
     )
