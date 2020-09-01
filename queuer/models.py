@@ -38,6 +38,10 @@ class Queue(models.Model):
         default=0
     )
 
+    total_wait_time = models.PositiveIntegerField(
+        default=0
+    )
+
     def __str__(self):
         return f"{self.barber.details.name}'s queue"
 
@@ -69,6 +73,10 @@ class QueueEntry(models.Model):
     )
 
     position = models.PositiveIntegerField(
+        default=0
+    )
+
+    wait_time = models.PositiveIntegerField(
         default=0
     )
 
