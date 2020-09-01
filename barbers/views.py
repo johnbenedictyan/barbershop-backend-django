@@ -1,8 +1,9 @@
 # Imports from django
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
@@ -25,11 +26,16 @@ class AccountDetailsView(LoginRequiredMixin, DetailView):
     model = AccountDetails
 
     def get_object(self, queryset=None):
-        return AccountDetails.objects.get(
-            user=User.objects.get(
-                pk=self.request.user.pk
+        try:
+            account_details = AccountDetails.objects.get(
+                user = User.objects.get(
+                    pk=self.request.user.pk
+                )
             )
-        )
+        except AccountDetails.DoesNotExist:
+            raise Http404
+        else:
+            return account_details
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -37,6 +43,19 @@ class AccountDetailsView(LoginRequiredMixin, DetailView):
             'username': User.objects.get(pk=self.request.user.pk).username
         })
         return context
+
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except Http404:
+            return redirect(
+                reverse(
+                    'account_details_create'
+                )
+            )
+        else:
+            return super().get(request, *args, **kwargs)
+
 
 # Redirect Views
 
@@ -88,13 +107,25 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         new_user = form.save()
-        new_account_details = AccountDetails(
-            user=User.objects.get(pk=new_user.pk)
-        )
-        new_account_details.save()
         messages.success(
             self.request,
             'Your account has been created!'
+        )
+        return redirect(self.success_url)
+
+
+class AccountDetailsCreateView(CreateView):
+    form_class = AccountDetailsForm
+    template_name = 'account-details-create.html'
+    success_url = reverse_lazy('account_details')
+
+    def form_valid(self, form):
+        new_account_details = form.save(commit=False)
+        new_account_details.user = self.request.user
+        new_account_details.save()
+        messages.success(
+            self.request,
+            'Your account details have been created!'
         )
         return redirect(self.success_url)
 
@@ -105,11 +136,16 @@ class UpdateAccountDetailsView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('home')
 
     def get_object(self, queryset=None):
-        return AccountDetails.objects.get(
-            user=User.objects.get(
-                pk=self.request.user.pk
+        try:
+            account_details = AccountDetails.objects.get(
+                user=User.objects.get(
+                    pk=self.request.user.pk
+                )
             )
-        )
+        except AccountDetails.DoesNotExist:
+            raise Http404
+        else:
+            return account_details
 
     def get_initial(self):
         initial = super(UpdateAccountDetailsView, self).get_initial()
@@ -120,7 +156,23 @@ class UpdateAccountDetailsView(LoginRequiredMixin, UpdateView):
         return kwargs
 
     def form_valid(self, form):
-        return super(UpdateAccountDetailsView, self).form_valid(form)
+        messages.success(
+            self.request,
+            'Your account details have been updated!'
+        )
+        return super().form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except Http404:
+            return redirect(
+                reverse(
+                    'account_details_create'
+                )
+            )
+        else:
+            return super().get(request, *args, **kwargs)
 
 class BarbershopList(ListView):
     model = User

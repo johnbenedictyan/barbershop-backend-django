@@ -217,19 +217,23 @@ class AccountDetailsForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(
-                    'address_1',
-                    css_class='form-group col-md-6'
-                ),
-                Column(
-                    'address_2',
-                    css_class='form-group col-md-6'
+                    'name',
+                    css_class='form-group'
                 ),
                 css_class='form-row'
             ),
             Row(
                 Column(
+                    'address_1',
+                    css_class='form-group col-md-4'
+                ),
+                Column(
+                    'address_2',
+                    css_class='form-group col-md-4'
+                ),
+                Column(
                     'postal_code',
-                    css_class='form-group'
+                    css_class='form-group col-md-4'
                 ),
                 css_class='form-row'
             ),
@@ -248,7 +252,7 @@ class AccountDetailsForm(forms.ModelForm):
                 Column(
                     Submit(
                         'submit',
-                        'Update Account Details',
+                        'Submit Account Details',
                         css_class="btn btn-primary w-50"
                     ),
                     css_class='form-group col-12 text-center'

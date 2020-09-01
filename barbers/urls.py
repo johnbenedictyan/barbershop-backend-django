@@ -12,7 +12,7 @@ from .forms import (
 from .views import (
     AccountDetailsView, PasswordChangeDoneRedirectView,
     PasswordResetDoneRedirectView, RegisterView, UpdateAccountDetailsView,
-    BarbershopList
+    AccountDetailsCreateView, BarbershopList
 )
 
 # Start of Urls
@@ -72,6 +72,11 @@ urlpatterns = [
         'details/',
         AccountDetailsView.as_view(),
         name='account_details'
+    ),
+    path(
+        'details/create/',
+        AccountDetailsCreateView.as_view(),
+        name='account_details_create'
     ),
     path(
         'details/update/',
