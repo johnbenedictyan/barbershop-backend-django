@@ -193,12 +193,9 @@ def ViewQueue(request, barberId):
                         queue=selected_queue,
                         uuid=uuid
                     )
-                except Exception as err:
-                    pass
-                else:
-                    if not queue_entry:
-                        request.session.pop('uuid')
-                        uuid = None
+                except QueueEntry.DoesNotExist:
+                    request.session.pop('uuid')
+                    uuid = None
             return render(
                 request,
                 'queue.html',
