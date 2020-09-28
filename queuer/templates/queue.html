@@ -1,37 +1,58 @@
 {% extends 'queuer-base.html' %}
 {% block queuer_section %}
 <div class="container">
-    <h1>{{barber_info.name}}'s queue</h1>
-    <p>Estimated Wait Time: {{queue.waiting_time}} mins</p>
-    <ul class="list-group">
-        {% if queue.opened == True %}
-            {% for entry in queue_object %}
-                {% if entry.uuid == uuid %}
-                    <li class="list-group-item" style="background-color:red;">
-                        <span class="badge badge-primary h5">{{entry.position}}</span>
-                        Queue Number: {{entry.queue_number}} {{entry.wait_time}} mins
-                    </li>
+    <div class="row fh">
+        <div class="col my-auto text-center">
+            <div class="row">
+                <div class="col">
+                    <h3>{{barber_info.name}}</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {% if wait_time %}
+                        <p class="lead">
+                            Estimated Wait: {{wait_time}} mins
+                        </p>
+                    {% else %}
+                        <p class="lead">
+                            Estimated Wait: {{queue.waiting_time}} mins
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row px-4">
+                <div class="col">
+                    {% if queue.opened == True %}
+                        <ul class="list-group mb-3">
+                            {% for entry in queue_object %}
+                                {% if entry.uuid == uuid %}
+                                    <li class="list-group-item active">#{{entry.queue_number}}</li>
+                                {% else %}
+                                    <li class="list-group-item">#{{entry.queue_number}}</li>
+                                {% endif %}
+                                {% empty %}
+                                    <li class="list-group-item">No one is in the queue</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+            {% if queue.opened == True %}
+                {% if uuid %}
+                    <a class="btn btn-danger btn-lg w-50" href="{% url 'leave_queue' queue.id %}" role="button">Leave</a>
                 {% else %}
-                    <li class="list-group-item">
-                        <span class="badge badge-primary h5">{{entry.position}}</span>
-                        Queue Number: {{entry.queue_number}} {{entry.wait_time}} mins
-                    </li>
+                    <a class="btn btn-success btn-lg w-50" href="{% url 'join_queue' queue.id %}"
+                        role="button">Enter</a>
                 {% endif %}
-            {% empty %}
-                <p>No one in queue!</p>
-            {% endfor %}
-        {% else %}
-            {% if queue.paused == True %}
-                <h1>The queue is paused!</h1>
             {% else %}
-                <h1>The queue is closed!</h1>
+                {% if queue.paused == True %}
+                    <a class="btn btn-warning btn-lg" role="button">Queue Paused</a>
+                {% else %}
+                    <a class="btn btn-warning btn-lg" role="button">Queue Closed</a>
+                {% endif %}
             {% endif %}
-        {% endif %}
-    </ul>
-    {% if uuid %}
-        <a class="btn btn-primary btn-lg" href="{% url 'leave_queue' queue.id %}" role="button">Leave Queue</a>
-    {% else %}
-        <a class="btn btn-primary btn-lg" href="{% url 'join_queue' queue.id %}" role="button">Join Queue</a>
-    {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock queuer_section %}
