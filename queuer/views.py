@@ -187,6 +187,7 @@ def ViewQueue(request, barberId):
                     }
                 )
             uuid = request.session.get('uuid')
+            wait_time = None
             if uuid:
                 try:
                     queue_entry = QueueEntry.objects.get(
@@ -196,6 +197,8 @@ def ViewQueue(request, barberId):
                 except QueueEntry.DoesNotExist:
                     request.session.pop('uuid')
                     uuid = None
+                else:
+                    wait_time = queue_entry.wait_time
             return render(
                 request,
                 'queue.html',
@@ -203,7 +206,8 @@ def ViewQueue(request, barberId):
                     'queue_object': queue_object,
                     'barber_info': barber_info,
                     'uuid': uuid,
-                    'queue': selected_queue
+                    'queue': selected_queue,
+                    'wait_time': wait_time
                 }
             )
 
