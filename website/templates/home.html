@@ -2,10 +2,85 @@
 {% load static %}
 {% block website_section %}
 <div class="container">
-    <div class="jumbotron">
-        <img src="{% static 'barbershop.jpg' %}" alt="" class="img-fluid">
-        <h1 class="display-4">Barbershop SG</h1>
-        <a class="btn btn-primary btn-lg" href="{% url 'all_barbers' %}" role="button">View all barbers</a>
+    <!-- <div class="row py-4 bg-primary">
+        <div class="col">
+            <form action="" method="get">
+                <div class="form-row px-2">
+                    <div class="col">
+                        <h2 class="mb-3">Enter a Queue</h2>
+                    </div>
+                </div>
+                <div class="form-row px-2">
+                    <div class="col-10">
+                        <input class="form-control form-control-lg" type="text" placeholder="Barber's Code" id="search">
+                    </div>
+                    <div class="col-2 text-center my-auto">
+                        <button type="submit" class="btn btn-dark btn-lg">
+                            <i class="fa fa-sign-in fa-lg" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-row px-2">
+                    <div class="col text-center">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row py-3">
+        <div class="col">
+            <div class="row my-2">
+                <div class="col">
+                    <h3 class="px-2">Past Barbers</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-9 my-auto">
+                                    <h4 class="card-title mb-0">Safarees</h4>
+                                </div>
+                                <div class="col-3">
+                                    <a href="#" class="btn btn-primary">
+                                        <i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="row fh">
+        <div class="col my-auto text-center">
+            <form action="" method="get">
+                <div class="form-row mb-2">
+                    <div class="col">
+                        <h3>View a Queue</h3>
+                    </div>
+                </div>
+                <div class="form-row px-5 mb-2">
+                    <div class="col">
+                        <p class="lead">Enter the barber's unique code below.</p>
+                    </div>
+                </div>
+                <div class="form-row px-2 mx-1 mb-4">
+                    <div class="col">
+                        <input class="form-control form-control-lg" type="text" placeholder="Barber's Code" id="search">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-dark btn-lg w-50">
+                            View
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock website_section %}
