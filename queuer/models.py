@@ -111,3 +111,5 @@ def order_queue_numbers(sender, instance, **kwargs):
     ):
         item.position = index + 1
         item.save()
+    queue.waiting_time = QueueEntry.objects.filter(queue=queue).count() * 15
+    queue.save()
