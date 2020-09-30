@@ -59,6 +59,12 @@ class AccountDetails(models.Model):
         blank=False
     )
 
+    uuid = models.CharField(
+        verbose_name="Unique Code",
+        max_length=5,
+        blank=False
+    )
+
     def __str__(self):
         return f"Account Details for {self.name}"
 
