@@ -1,6 +1,44 @@
 {% extends 'queuer-base.html' %}
 {% block queuer_section %}
 <div class="container">
+    <div class="row fh">
+        <div class="col my-auto text-center">
+            <div class="row mb-2">
+                <div class="col">
+                    <h3>{{barber_info.name}}</h3>
+                </div>
+            </div>
+            <div class="row px-4">
+                <div class="col">
+                    {% if queue.opened == True %}
+                        <ul class="list-group mb-3">
+                            {% for entry in queue_object %}
+                                <li class="list-group-item">#{{entry.queue_number}}</li>
+                                {% empty %}
+                                <li class="list-group-item">No one is in the queue</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row px-4">
+                {% if queue.paused == True or queue.opened == False %}
+                <div class="col">
+                    <a class="btn btn-primary btn-lg" href="{% url 'open_queue' queue.id %}" role="button">Open</a>
+                </div>
+                {% else %}
+                <div class="col">
+                    <a class="btn btn-warning btn-lg w-100" href="{% url 'pause_queue' queue.id %}" role="button">Pause</a>
+                </div>
+                <div class="col">
+                    <a class="btn btn-danger btn-lg w-100" href="{% url 'close_queue' queue.id %}" role="button">Close</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="container">
     <h1>{{barber_info.name}}'s queue</h1>
     <ul class="list-group">
         {% if queue.opened == True %}
@@ -23,5 +61,5 @@
         <a class="btn btn-primary btn-lg" href="{% url 'pause_queue' queue.id %}" role="button">Pause Queue</a>
         <a class="btn btn-primary btn-lg" href="{% url 'close_queue' queue.id %}" role="button">Close Queue</a>
     {% endif %}
-</div>
+</div> -->
 {% endblock queuer_section %}
