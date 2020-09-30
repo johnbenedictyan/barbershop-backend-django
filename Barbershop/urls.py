@@ -1,4 +1,4 @@
-"""Barbershop URL Configuration
+"""usershop URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.1/topics/http/urls/
@@ -21,7 +21,7 @@ from django.urls import include, path
 # from notifications.urls import urlpatterns as notifications_urls
 
 # Imports from local apps
-from barbers.urls import urlpatterns as barbers_urls
+from users.urls import urlpatterns as users_urls
 from website.urls import urlpatterns as website_urls
 from queuer.urls import urlpatterns as queue_urls
 
@@ -29,7 +29,7 @@ from queuer.urls import urlpatterns as queue_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('barbers/', include(barbers_urls)),
+    path('users/', include(users_urls)),
     path('queue/', include(queue_urls)),
     path('', include(website_urls)),
 ]

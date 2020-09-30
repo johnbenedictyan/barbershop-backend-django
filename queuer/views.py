@@ -10,7 +10,7 @@ from django.urls import reverse
 # Imports from foreign installed apps
 
 # Imports from local apps
-from barbers.models import AccountDetails
+from users.models import AccountDetails
 from .models import Queue, QueueEntry
 
 # Start of Views
