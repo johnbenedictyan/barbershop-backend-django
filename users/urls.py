@@ -12,7 +12,7 @@ from .forms import (
 from .views import (
     AccountDetailsView, PasswordChangeDoneRedirectView,
     PasswordResetDoneRedirectView, RegisterView, UpdateAccountDetailsView,
-    AccountDetailsCreateView, BarbershopList
+    AccountDetailsCreateView, LogoutView
 )
 
 # Start of Urls
@@ -60,13 +60,6 @@ urlpatterns = [
         ),
         name='sign_in'
     ),
-    path(
-        'sign-out/',
-        auth_views.LogoutView.as_view(
-            template_name='sign-out.html'
-        ),
-        name='sign_out'
-    ),
     # Custom views urls
     path(
         'details/',
@@ -99,8 +92,8 @@ urlpatterns = [
         name='register'
     ),
     path(
-        '',
-        BarbershopList.as_view(),
-        name='all_barbers'
+        'sign-out/',
+        LogoutView.as_view(),
+        name='sign_out'
     )
 ]

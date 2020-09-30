@@ -89,6 +89,19 @@ class PasswordResetDoneRedirectView(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         return super().get_redirect_url(*args, **kwargs)
 
+
+class LogoutView(LoginRequiredMixin, RedirectView):
+    permanent = True
+    pattern_name = 'home'
+
+    def get(self, request, *args, **kwargs):
+        messages.success(
+            request,
+            'You have successfully logged out'
+        )
+        return super().get(request, *args, **kwargs)
+
+
 # Form Views
 
 
@@ -173,16 +186,3 @@ class UpdateAccountDetailsView(LoginRequiredMixin, UpdateView):
             )
         else:
             return super().get(request, *args, **kwargs)
-
-class BarbershopList(ListView):
-    model = User
-    template_name = 'barbers.html'
-    context_object_name = 'barbers'
-    queryset = User.objects.all().exclude(queue=None)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-            
-        })
-        return context
