@@ -4,7 +4,7 @@
 <div class="container">
    <div class="row fh">
         <div class="col my-auto text-center">
-            <form action="" method="get">
+            <form action="{% url 'search_queue' %}" method="POST">
                 <div class="form-row mb-2">
                     <div class="col">
                         <h3>View a Queue</h3>
@@ -17,9 +17,10 @@
                 </div>
                 <div class="form-row px-2 mx-1 mb-4">
                     <div class="col">
-                        <input class="form-control form-control-lg" type="text" placeholder="Barber's Code" id="search">
+                        <input class="form-control form-control-lg" type="text" placeholder="Barber's Code" id="search" name="uuid">
                     </div>
                 </div>
+                {% csrf_token %}
                 <div class="form-row">
                     <div class="col">
                         <button type="submit" class="btn btn-primary btn-lg w-50">
