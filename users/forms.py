@@ -252,8 +252,8 @@ class AccountDetailsForm(forms.ModelForm):
                 Column(
                     Submit(
                         'submit',
-                        'Submit Account Details',
-                        css_class="btn btn-primary w-50"
+                        'Submit',
+                        css_class="btn btn-primary w-75"
                     ),
                     css_class='form-group col-12 text-center'
                 ),
