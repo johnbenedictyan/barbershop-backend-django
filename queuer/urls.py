@@ -6,7 +6,7 @@ from django.urls import path
 # Imports from local apps
 from .views import (
     JoinQueue, LeaveQueue, ViewQueue, OpenQueue, CloseQueue, PauseQueue,
-    KickFromQueue, CreateQueue
+    KickFromQueue, CreateQueue, SearchQueue
 )
 
 # Start of Urls
@@ -51,5 +51,10 @@ urlpatterns = [
         'create',
         CreateQueue,
         name='create_queue'
+    ),
+    path(
+        'search',
+        SearchQueue,
+        name='search_queue'
     )
 ]

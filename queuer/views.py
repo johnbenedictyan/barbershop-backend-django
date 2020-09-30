@@ -212,6 +212,38 @@ def ViewQueue(request, barberId):
             )
 
 
+def SearchQueue(request):
+    if request.method == 'POST':
+        uuid = request.POST.get('uuid')
+        if uuid:
+            try:
+                barber_info = AccountDetails.objects.get(
+                    uuid=uuid
+                )
+            except AccountDetails.DoesNotExist:
+                messages.warning(
+                    request,
+                    f"This barber does not exist"
+                )
+                return redirect(
+                    reverse(
+                        'home'
+                    )
+                )
+            else:
+                barber_id = barber_info.user.id
+                return redirect(
+                    reverse(
+                        'view_queue',
+                        args=(barber_id,)
+                    )
+                )
+    return redirect(
+        reverse(
+            'home'
+        )
+    )
+
 @login_required
 def OpenQueue(request, queueId):
     try:
