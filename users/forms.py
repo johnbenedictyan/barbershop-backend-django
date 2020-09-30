@@ -197,7 +197,7 @@ class SignInForm(AuthenticationForm):
 class AccountDetailsForm(forms.ModelForm):
     class Meta:
         model = AccountDetails
-        exclude = ['user']
+        exclude = ['user','uuid']
         widgets = {
             'address_1': forms.TextInput(
                 attrs={
