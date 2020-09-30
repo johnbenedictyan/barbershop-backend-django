@@ -118,3 +118,4 @@ env.py
 
 style.scss
 style.css.map
+/static/bootstrap
