@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
-    'barbers',
+    'users',
     'queuer',
     'website'
 ]
@@ -139,7 +139,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 # Custom Settings
 
 # User Model
-AUTH_USER_MODEL = 'barbers.User'
+AUTH_USER_MODEL = 'users.User'
 
 # Default Urls
 LOGIN_URL = 'sign_in'
