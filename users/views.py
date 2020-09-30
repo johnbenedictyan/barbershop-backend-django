@@ -134,9 +134,19 @@ class AccountDetailsCreateView(CreateView):
     template_name = 'account-details-create.html'
     success_url = reverse_lazy('account_details')
 
+    def uuid_generator(length):
+        letters_and_digits = string.ascii_lowercase + string.digits
+        result = ''.join(
+            (
+                random.choice(letters_and_digits) for i in range(length)
+            )
+        )
+        return result
+
     def form_valid(self, form):
         new_account_details = form.save(commit=False)
         new_account_details.user = self.request.user
+        new_account_details.uuid = uuid_generator(5)
         new_account_details.save()
         messages.success(
             self.request,
