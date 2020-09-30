@@ -143,10 +143,19 @@ class AccountDetailsCreateView(CreateView):
         )
         return result
 
+    def uuid_checker():
+        done_flag = False
+        while done_flag == False:
+            uuid = uuid_generator(5)
+            existing_uuid = AccountDetails.objects.filter(uuid=uuid)
+            if not existing_uuid:
+                done_flag = True
+                return uuid
+
     def form_valid(self, form):
         new_account_details = form.save(commit=False)
         new_account_details.user = self.request.user
-        new_account_details.uuid = uuid_generator(5)
+        new_account_details.uuid = uuid_checker()
         new_account_details.save()
         messages.success(
             self.request,
