@@ -1,5 +1,6 @@
 # Imports from django
 from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import redirect
@@ -91,10 +92,11 @@ class PasswordResetDoneRedirectView(LoginRequiredMixin, RedirectView):
 
 
 class LogoutView(LoginRequiredMixin, RedirectView):
-    permanent = True
+    permanent = False
     pattern_name = 'home'
 
     def get(self, request, *args, **kwargs):
+        logout(request)
         messages.success(
             request,
             'You have successfully logged out'
